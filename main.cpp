@@ -6,6 +6,9 @@ const int AMOUNT_OF_ELEMENTS_IN_STR = 200;
 void print(char text[][AMOUNT_OF_ELEMENTS_IN_STR]);
 void sorting(char text[][AMOUNT_OF_ELEMENTS_IN_STR]);
 
+int comparing(char text[][AMOUNT_OF_ELEMENTS_IN_STR], int* el, int* string);
+void change_srt(char text[][AMOUNT_OF_ELEMENTS_IN_STR], int* string);
+
 int main()
 {
     char text[AMOUNT_OF_STR][AMOUNT_OF_ELEMENTS_IN_STR] = {
@@ -25,8 +28,8 @@ int main()
     "far, far from Italy, his adored.\n"
     };
 
-    if ('E'<'e')    
-        printf("yes, but its strange\n\n");
+    //if ('E'<'e')    
+        //printf("yes, but its strange\n\n");
 
     //printf("%s\n", text[3][5]);
     print(text);
@@ -56,22 +59,53 @@ void print(char text[][AMOUNT_OF_ELEMENTS_IN_STR])
 
 void sorting(char text[][AMOUNT_OF_ELEMENTS_IN_STR])
 {
+    //for (int element = 0; element < AMOUNT_OF_ELEMENTS_IN_STR; element++)
+    //{
     for (int str = AMOUNT_OF_STR-1; str > 0; str--)
     {
-        for (int element = 0; element < str; element++)
+        for (int string = 0; string < str; string++)
         {
+            int el = 0;
+
             //printf("%s\n", text[element]);
-            if (text[element][0] > text[element+1][0])
-            {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
-                for (int i = 0; i < AMOUNT_OF_ELEMENTS_IN_STR; i++)
+
+            int difference = comparing(text, &el, &string);
+
+            if (difference > 0)
+                change_srt(text, &string);
+            else if (difference == 0)
+            {
+                //printf("\nproblem\n string %s\n", text[string][el]);
+                while (difference == 0)
                 {
-                    
-                    char temp = 0;
-                    temp = text[element][i];
-                    text[element][i] = text[element+1][i];
-                    text[element+1][i] = temp;
+                    el++;
+                    difference = comparing(text, &el, &string);
                 }
+                if (difference > 0)
+                    change_srt(text, &string);
             }
         }
+    }
+}
+//}
+
+int comparing(char text[][AMOUNT_OF_ELEMENTS_IN_STR], int* el, int* string)
+{
+    if (text[*string][*el] > text[*string+1][*el])
+        return 1;
+    else if (text[*string][*el] == text[*string+1][*el])
+        return 0;
+    else
+        return -1;
+}
+
+void change_srt(char text[][AMOUNT_OF_ELEMENTS_IN_STR], int* string)
+{
+    for (int i = 0; i < AMOUNT_OF_ELEMENTS_IN_STR; i++)
+    {     
+        char temp = 0;
+        temp = text[*string][i];
+        text[*string][i] = text[*string+1][i];
+        text[*string+1][i] = temp;
     }
 }
