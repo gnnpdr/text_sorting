@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <ctype.h>
 
 const int AMOUNT_OF_STR = 14;
 const int AMOUNT_OF_ELEMENTS_IN_STR = 200;
@@ -6,7 +7,7 @@ const int AMOUNT_OF_ELEMENTS_IN_STR = 200;
 void print(char text[][AMOUNT_OF_ELEMENTS_IN_STR]);
 void sorting(char text[][AMOUNT_OF_ELEMENTS_IN_STR]);
 
-int comparing(char text[][AMOUNT_OF_ELEMENTS_IN_STR], int* el, int* string);
+int comparing(char text[][AMOUNT_OF_ELEMENTS_IN_STR], int* el1, int* el2, int* string);
 void change_srt(char text[][AMOUNT_OF_ELEMENTS_IN_STR], int* string);
 
 int main()
@@ -20,7 +21,7 @@ int main()
     "its work, its torture, its enjoyment,\n",
     "what occupied his chafing powers\n",
     "throughout the boredom of the hours -\n",
-    "this was the science of that passion\n",
+    " this was the science of that passion\n",
     "which Ovid sang, for which the bard,\n",
     "condemned to a lifetime of hard,\n",
     "ended his wild career of fashion\n",
@@ -28,10 +29,6 @@ int main()
     "far, far from Italy, his adored.\n"
     };
 
-    //if ('E'<'e')    
-        //printf("yes, but its strange\n\n");
-
-    //printf("%s\n", text[3][5]);
     print(text);
     sorting(text);
     printf("\n");
@@ -47,7 +44,6 @@ void print(char text[][AMOUNT_OF_ELEMENTS_IN_STR])
         int i = 0;
         do
         {
-            //printf("str %d, el %d ", str, i);
             printf("%c", text[str][i]);
             i++;
         }
@@ -59,27 +55,24 @@ void print(char text[][AMOUNT_OF_ELEMENTS_IN_STR])
 
 void sorting(char text[][AMOUNT_OF_ELEMENTS_IN_STR])
 {
-    //for (int element = 0; element < AMOUNT_OF_ELEMENTS_IN_STR; element++)
-    //{
     for (int str = AMOUNT_OF_STR-1; str > 0; str--)
     {
         for (int string = 0; string < str; string++)
         {
-            int el = 0;
+            int el1 = 0;
+            int el2 = 0;
 
-            //printf("%s\n", text[element]);
-
-            int difference = comparing(text, &el, &string);
+            int difference = comparing(text, &el1, &el2, &string);
 
             if (difference > 0)
                 change_srt(text, &string);
             else if (difference == 0)
             {
-                //printf("\nproblem\n string %s\n", text[string][el]);
                 while (difference == 0)
                 {
-                    el++;
-                    difference = comparing(text, &el, &string);
+                    el1++;
+                    el2++;
+                    difference = comparing(text, &el1, &el2, &string);
                 }
                 if (difference > 0)
                     change_srt(text, &string);
@@ -87,13 +80,19 @@ void sorting(char text[][AMOUNT_OF_ELEMENTS_IN_STR])
         }
     }
 }
-//}
 
-int comparing(char text[][AMOUNT_OF_ELEMENTS_IN_STR], int* el, int* string)
+int comparing(char text[][AMOUNT_OF_ELEMENTS_IN_STR], int* el1, int* el2, int* string)
 {
-    if (text[*string][*el] > text[*string+1][*el])
+    if (isalpha(text[*string][*el1]) == 0)
+        *el1++;
+
+    if (isalpha(text[*string+1][*el2]) == 0)
+        *el2++;
+        
+
+    if (tolower(text[*string][*el1]) > tolower(text[*string+1][*el2]))
         return 1;
-    else if (text[*string][*el] == text[*string+1][*el])
+    else if (tolower(text[*string][*el1]) == tolower(text[*string+1][*el2]))
         return 0;
     else
         return -1;
