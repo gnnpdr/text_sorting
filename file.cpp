@@ -1,53 +1,34 @@
 #include <stdio.h>
-const int AMOUNT_OF_STR = 14;
-const int AMOUNT_OF_ELEMENTS_IN_STR = 200;
+#include <stdlib.h>
+//const int AMOUNT_OF_STR = 14;
+//const int AMOUNT_OF_ELEMENTS_IN_STR = 200;
 
-void print(char text[][AMOUNT_OF_ELEMENTS_IN_STR]);
-
-
+void print(char* text, long file_size);
 
 int main()
 {
-   
-    char text[AMOUNT_OF_STR][AMOUNT_OF_ELEMENTS_IN_STR] = {};
+    FILE* file_pointer = fopen("text.txt", "r");
 
-    char buffer[200];
+    fseek(file_pointer , 0 , SEEK_END);  
+    long file_size = ftell(file_pointer); 
+    rewind (file_pointer);
 
-    FILE *fp = fopen("text.txt", "r");
+    char* text = (char*)calloc(file_size, sizeof(char));
+    
+    fread (text, sizeof(char), file_size, file_pointer);
 
-    fread (text, sizeof(char))
-    if(fp)
-    {
-        char ch = 0;
-        for (int i = 0; i < AMOUNT_OF_STR; i++)
-        {
-            for (int j = 0; j < AMOUNT_OF_ELEMENTS_IN_STR; j++)
-            {
-                ch = getc(fp);
-                text[i][j] = ch;
-                if (ch == EOF || ch == '\n' )    
-                    break;
-            }
-        }
-    }
-
-    print(text);
-    fclose(fp);
+    print(text, file_size);
+    free(text);
     return 0;
 }
 
-void print(char text[][AMOUNT_OF_ELEMENTS_IN_STR])
+void print(char* text, long file_size)
 {
-    for (size_t str = 0; str < AMOUNT_OF_STR; str++)
+    size_t element = 0;
+    while (element < file_size)
     {
-        int i = 0;
-        do
-        {
-            printf("%c", text[str][i]);
-            i++;
-        }
-        while(text[str][i] != '\0');
-        i = 0;
+        char* ch = text + element;
+        printf("%c", *ch);
+        element++;
     }
-
 }
