@@ -26,13 +26,10 @@ int main()
                 for (int j = 0; j < AMOUNT_OF_ELEMENTS_IN_STR; j++)
                 {
                     ch = getc(fp);
-
-                    if (ch == '\0')
-                        break;
-
                     text[i][j] = ch;
-
-                    printf("%c, row %d, str %d\n", text[i][j], i, j);
+                    if (ch == EOF || ch == '\n' )
+                        
+                        break;
                 }
             }
         }
