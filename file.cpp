@@ -15,25 +15,21 @@ int main()
 
     FILE *fp = fopen("text.txt", "r");
 
+    fread (text, sizeof(char))
     if(fp)
     {
         char ch = 0;
-        //printf("all right\n");
-        while(ch != EOF)
+        for (int i = 0; i < AMOUNT_OF_STR; i++)
         {
-            for (int i = 0; i < AMOUNT_OF_STR; i++)
+            for (int j = 0; j < AMOUNT_OF_ELEMENTS_IN_STR; j++)
             {
-                for (int j = 0; j < AMOUNT_OF_ELEMENTS_IN_STR; j++)
-                {
-                    ch = getc(fp);
-                    text[i][j] = ch;
-                    if (ch == EOF || ch == '\n' )
-                        
-                        break;
-                }
+                ch = getc(fp);
+                text[i][j] = ch;
+                if (ch == EOF || ch == '\n' )    
+                    break;
             }
         }
-    } 
+    }
 
     print(text);
     fclose(fp);
