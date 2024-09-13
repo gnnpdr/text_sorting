@@ -9,6 +9,13 @@ enum ResultOfComparing
     GREATER = 1
 };
 
+/*struct Data
+{
+    char* text;
+    long file_size;
+    char** addresses;
+};*/
+
 const int AMOUNT_OF_STR = 15;
 
 void finding_amount_of_elements(long* file_size, FILE* file_pointer);
@@ -75,13 +82,6 @@ void sorting(char** addresses)
 
 int comparing(char** addresses, int* el1, int* el2, int* string)
 {
-    if (isalpha(addresses[*string][*el1]) == 0)
-        *el1++;
-
-    if (isalpha(addresses[*string+1][*el2]) == 0)
-        *el2++;
-        
-
     if (tolower(addresses[*string][*el1]) > tolower(addresses[*string+1][*el2]))
         return GREATER;
     else if (tolower(addresses[*string][*el1]) == tolower(addresses[*string+1][*el2]))
