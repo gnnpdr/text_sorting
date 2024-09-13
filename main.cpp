@@ -9,143 +9,182 @@ enum ResultOfComparing
     GREATER = 1
 };
 
-/*struct Data
+struct Data
 {
-    char* text;
+    FILE* file_pointer;
     long file_size;
-    char** addresses;
-};*/
+    char* text;
+};
 
-const int AMOUNT_OF_STR = 15;
+struct Array
+{
+    char** addresses;  
+    int amount_of_strings;
+};
 
-void finding_amount_of_elements(long* file_size, FILE* file_pointer);
-void filling_the_array_of_addresses(char* text, long file_size, char** addresses);
+void finding_amount_of_elements_in_the_file(Data* the_text);
+void filling_the_struct_Data (Data* the_text);
 
-void print_text(char** addresses);
+void change_text_finding_amount_of_str(Data* the_text, Array* text_for_sorting);
+void filling_the_array_of_addresses(Data* the_text, Array* text_for_sorting);
 
-void sorting(char** addresses);
-int comparing(char** addresses, int* el1, int* el2, int* string);
-void change_str(char** addresses, int* string);
+void print_text(Array* text_for_sorting);
 
-void free_arrays(char** addresses, char* text);
+void forward_sorting(Array* text_for_sorting);
+void finding_address_of_start(Array* text_for_sorting, int string);
+int comparing(Array* text_for_sorting, int string, int element);
+void change_str(Array* text_for_sorting, int string);
+
+void free_arrays(Array* text_for_sorting, Data* the_text);
 
 int main()
 {
-    FILE* file_pointer = fopen("text.txt", "rb");
+    Data the_text = {};
+    Array text_for_sorting = {};
 
-    long file_size = 0;
-    finding_amount_of_elements(&file_size, file_pointer);
-
-    char* text = (char*)calloc(file_size, sizeof(char));
-    char** addresses = (char**)calloc(AMOUNT_OF_STR, sizeof(char*));
+    finding_amount_of_elements_in_the_file(&the_text);
+    filling_the_struct_Data(&the_text);
     
-    fread (text, sizeof(char), file_size, file_pointer);
+    change_text_finding_amount_of_str(&the_text, &text_for_sorting);
+    filling_the_array_of_addresses(&the_text, &text_for_sorting);
 
-    filling_the_array_of_addresses(text, file_size, addresses);
+    print_text(&text_for_sorting);
+    forward_sorting(&text_for_sorting);
+    print_text(&text_for_sorting);
 
-    print_text(addresses);
-    sorting(addresses);
-    print_text(addresses);
-
-    free_arrays(addresses, text);
+    free_arrays(&text_for_sorting, &the_text);
 
     return 0;
 }
 
-void sorting(char** addresses)
+
+void finding_amount_of_elements_in_the_file(Data* the_text)
 {
-    for (int str = AMOUNT_OF_STR-1; str > 0; str--)
-    {
-        for (int string = 0; string < str; string++)
-        {
-            int el1 = 0;
-            int el2 = 0;
+    the_text->file_pointer = fopen("text.txt", "rb"); //надо сделать так, чтобы еще пользователь мог вводить название файла
 
-            int difference = comparing(addresses, &el1, &el2, &string);
-
-            if (difference > 0)
-                change_str(addresses, &string);
-            else if (difference == 0)
-            {
-                while (difference == 0)
-                {
-                    el1++;
-                    el2++;
-                    difference = comparing(addresses, &el1, &el2, &string);
-                }
-                if (difference > 0)
-                    change_str(addresses, &string);
-            }
-        }
-    }
+    fseek(the_text->file_pointer , 0 , SEEK_END);  
+    the_text->file_size = ftell(the_text->file_pointer); 
+    rewind (the_text->file_pointer);
 }
 
-int comparing(char** addresses, int* el1, int* el2, int* string)
+void filling_the_struct_Data (Data* the_text)
 {
-    if (tolower(addresses[*string][*el1]) > tolower(addresses[*string+1][*el2]))
-        return GREATER;
-    else if (tolower(addresses[*string][*el1]) == tolower(addresses[*string+1][*el2]))
-        return EQUAL;
-    else
-        return LESS;
+    the_text->text = (char*)calloc(the_text->file_size, sizeof(char));
+    fread (the_text->text, sizeof(char), the_text->file_size, the_text->file_pointer);
 }
 
-void change_str(char** addresses, int* string)
-{
-    char* temp = 0;
-    temp = addresses[*string];
-    addresses[*string] = addresses[*string+1];
-    addresses[*string+1] = temp;
-}
-
-void print_text(char** addresses)
-{
-    size_t str = 0;
-    while (str < AMOUNT_OF_STR)
-    {
-        char* s = *(addresses + str);
-        printf("%s\n", s);
-        str++;
-    }
-}
-
-void filling_the_array_of_addresses(char* text, long file_size, char** addresses)
+void change_text_finding_amount_of_str(Data* the_text, Array* text_for_sorting)
 {
     size_t element = 0;
+    size_t cnt = 0;
 
-    int index_of_first_element_in_string = 0;
-
-    *(addresses + index_of_first_element_in_string) = text + element;
-
-    while (element < file_size)
+    while (element < the_text->file_size)
     {
-        char* ch = text + element;
+        char* ch = the_text->text + element;
 
         if (*ch == '\r')
             *ch = '\0';
 
-        else if (*ch == '\n' || *ch == EOF)
+        else if (*ch == '\n')
         {
-            
             *ch = '\0';
+            cnt++;
+        }
+        element++;
+    }
+    text_for_sorting->amount_of_strings = cnt;
+}
 
+void filling_the_array_of_addresses(Data* the_text, Array* text_for_sorting)
+{   
+    text_for_sorting->addresses = (char**)calloc(text_for_sorting->amount_of_strings, sizeof(char*)); // добавить ошибки при ненахождении места, выделить эти фии в отдельные, добавить их в структуру
+    
+    size_t element = 0;
+    int index_of_first_element_in_string = 0;
+
+    *(text_for_sorting->addresses + index_of_first_element_in_string) = the_text->text + element;
+
+    while (element < the_text->file_size)
+    {
+        char* ch = the_text->text + element;
+
+        if (*ch == '\0')
+        {
             index_of_first_element_in_string++;
-            *(addresses + index_of_first_element_in_string) = text + element + 1;
-            
+            *(text_for_sorting->addresses + index_of_first_element_in_string) = the_text->text + element + 1;
+
+            element++;
         }
         element++;
     }
 }
 
-void finding_amount_of_elements(long* file_size, FILE* file_pointer)
+void print_text(Array* text_for_sorting)
 {
-    fseek(file_pointer , 0 , SEEK_END);  
-    *file_size = ftell(file_pointer); 
-    rewind (file_pointer);
+    size_t str = 0;
+    while (str < text_for_sorting->amount_of_strings)
+    {
+        char* s = *(text_for_sorting->addresses + str);
+        printf("%s\n", s);
+        str++;
+    }
 }
 
-void free_arrays(char** addresses, char* text)
+void forward_sorting(Array* text_for_sorting) //надо сделать функцию, которая подает на выход адрес начала строки, т.е. учитывает пробелы
 {
-    free(addresses);
-    free(text);
+    for (int str = text_for_sorting->amount_of_strings-1; str > 0; str--)
+    {
+        for (int string = 0; string < str; string++)
+        {
+            int element = 0;
+
+            int difference = comparing(text_for_sorting, element, string);
+
+            if (difference > 0)
+                change_str(text_for_sorting, string);
+            else if (difference == 0)
+            {
+                while (difference == 0)
+                {
+                    element++;
+                    difference = comparing(text_for_sorting, element, string);
+                }
+                if (difference > 0)
+                    change_str(text_for_sorting, string);
+            }
+        }
+    }
+}
+
+void finding_address_of_start(Array* text_for_sorting, int string)
+{
+    if (isspace(*(text_for_sorting->addresses[string])) != 0)
+        text_for_sorting->addresses[string] = text_for_sorting->addresses[string] + 1;
+}
+
+int comparing(Array* text_for_sorting, int string, int element)
+{
+    finding_address_of_start(text_for_sorting, string);    //меняет адрес, переносит его к первому непробельному символу
+    finding_address_of_start(text_for_sorting, (string+1));
+
+    if (tolower(text_for_sorting->addresses[string][element]) > tolower(text_for_sorting->addresses[string+1][element]))
+        return GREATER;
+    else if (tolower(text_for_sorting->addresses[string][element]) == tolower(text_for_sorting->addresses[string+1][element]))
+        return EQUAL;
+    else
+        return LESS;
+}
+
+void change_str(Array* text_for_sorting, int string)
+{
+    char* temp = 0;
+    temp = text_for_sorting->addresses[string];
+    text_for_sorting->addresses[string] = text_for_sorting->addresses[string+1];
+    text_for_sorting->addresses[string+1] = temp;
+}
+
+void free_arrays(Array* text_for_sorting, Data* the_text)
+{
+    free(text_for_sorting->addresses);
+    free(the_text->text);
 }
