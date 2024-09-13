@@ -60,11 +60,15 @@ int main()
 
 void finding_amount_of_elements_in_the_file(Data* the_text)
 {
+    //printf("first func start\n");
+
     the_text->file_pointer = fopen("text.txt", "rb"); //надо сделать так, чтобы еще пользователь мог вводить название файла
 
     fseek(the_text->file_pointer , 0 , SEEK_END);  
     the_text->file_size = ftell(the_text->file_pointer); 
     rewind (the_text->file_pointer);
+
+    //printf("first func end\n");
 }
 
 void filling_the_struct_Data (Data* the_text)
@@ -75,6 +79,7 @@ void filling_the_struct_Data (Data* the_text)
 
 void change_text_finding_amount_of_str(Data* the_text, Array* text_for_sorting)
 {
+    //printf("start of text array %p\n", the_text->text);
     size_t element = 0;
     size_t cnt = 0;
 
@@ -89,10 +94,14 @@ void change_text_finding_amount_of_str(Data* the_text, Array* text_for_sorting)
         {
             *ch = '\0';
             cnt++;
+            //printf("first element pointer %p\n", the_text->text + element + 1);
+            //printf("char %c\n", *(the_text->text + element - 5));
         }
+        
         element++;
     }
-    text_for_sorting->amount_of_strings = cnt;
+    text_for_sorting->amount_of_strings = cnt + 1;
+    //printf("amount of strings %d\n", text_for_sorting->amount_of_strings);
 }
 
 void filling_the_array_of_addresses(Data* the_text, Array* text_for_sorting)
@@ -103,6 +112,8 @@ void filling_the_array_of_addresses(Data* the_text, Array* text_for_sorting)
     int index_of_first_element_in_string = 0;
 
     *(text_for_sorting->addresses + index_of_first_element_in_string) = the_text->text + element;
+    //printf("addresses start %p\n", *(text_for_sorting->addresses + index_of_first_element_in_string));
+    //printf("string %d - %s", index_of_first_element_in_string, *(text_for_sorting->addresses + index_of_first_element_in_string));
 
     while (element < the_text->file_size)
     {
@@ -111,8 +122,9 @@ void filling_the_array_of_addresses(Data* the_text, Array* text_for_sorting)
         if (*ch == '\0')
         {
             index_of_first_element_in_string++;
-            *(text_for_sorting->addresses + index_of_first_element_in_string) = the_text->text + element + 1;
-
+            *(text_for_sorting->addresses + index_of_first_element_in_string) = the_text->text + element + 2;
+            //printf("addresses element %d - %p\n", index_of_first_element_in_string, *(text_for_sorting->addresses + index_of_first_element_in_string));
+            //printf("string %d - %s", index_of_first_element_in_string, *(text_for_sorting->addresses + index_of_first_element_in_string));
             element++;
         }
         element++;
