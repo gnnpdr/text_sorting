@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 enum ResultOfComparing
 {
@@ -8,58 +9,43 @@ enum ResultOfComparing
     GREATER = 1
 };
 
-const int AMOUNT_OF_STR = 14;
-const int AMOUNT_OF_ELEMENTS_IN_STR = 200;
+const int AMOUNT_OF_STR = 15;
 
-void print(char text[][AMOUNT_OF_ELEMENTS_IN_STR]);
-void sorting(char text[][AMOUNT_OF_ELEMENTS_IN_STR]);
+void finding_amount_of_elements(long* file_size, FILE* file_pointer);
+void filling_the_array_of_addresses(char* text, long file_size, char** addresses);
 
-int comparing(char text[][AMOUNT_OF_ELEMENTS_IN_STR], int* el1, int* el2, int* string);
-void change_srt(char text[][AMOUNT_OF_ELEMENTS_IN_STR], int* string);
+void print_text(char** addresses);
+
+void sorting(char** addresses);
+int comparing(char** addresses, int* el1, int* el2, int* string);
+void change_str(char** addresses, int* string);
+
+void free_arrays(char** addresses, char* text);
 
 int main()
 {
-    char text[AMOUNT_OF_STR][AMOUNT_OF_ELEMENTS_IN_STR] = {
-    "Evgeny's total store of knowledge\n",
-    "I have no leisure to recall;\n",
-    "where he was master of his college,\n",
-    "the art he'd studied best of all,\n",
-    "his young heyday's supreme employment,\n",
-    "its work, its torture, its enjoyment,\n",
-    "what occupied his chafing powers\n",
-    "throughout the boredom of the hours -\n",
-    "this was the science of that passion\n",
-    "which Ovid sang, for which the bard,\n",
-    "condemned to a lifetime of hard,\n",
-    "ended his wild career of fashion\n",
-    "deep in Moldavia the abhorred,\n",
-    "far, far from Italy, his adored.\n"
-    };
+    FILE* file_pointer = fopen("text.txt", "rb");
 
-    print(text);
-    sorting(text);
-    printf("\n");
-    print(text);
+    long file_size = 0;
+    finding_amount_of_elements(&file_size, file_pointer);
+
+    char* text = (char*)calloc(file_size, sizeof(char));
+    char** addresses = (char**)calloc(AMOUNT_OF_STR, sizeof(char*));
+    
+    fread (text, sizeof(char), file_size, file_pointer);
+
+    filling_the_array_of_addresses(text, file_size, addresses);
+
+    print_text(addresses);
+    sorting(addresses);
+    print_text(addresses);
+
+    free_arrays(addresses, text);
 
     return 0;
 }
 
-void print(char text[][AMOUNT_OF_ELEMENTS_IN_STR]) //функция будет заменена
-{
-    for (size_t str = 0; str < AMOUNT_OF_STR; str++)
-    {
-        int i = 0;
-        do
-        {
-            printf("%c", text[str][i]);
-            i++;
-        }
-        while(text[str][i] != '\0');
-        i = 0;
-    }
-}
-
-void sorting(char text[][AMOUNT_OF_ELEMENTS_IN_STR])
+void sorting(char** addresses)
 {
     for (int str = AMOUNT_OF_STR-1; str > 0; str--)
     {
@@ -68,49 +54,98 @@ void sorting(char text[][AMOUNT_OF_ELEMENTS_IN_STR])
             int el1 = 0;
             int el2 = 0;
 
-            int difference = comparing(text, &el1, &el2, &string);
+            int difference = comparing(addresses, &el1, &el2, &string);
 
             if (difference > 0)
-                change_srt(text, &string);
+                change_str(addresses, &string);
             else if (difference == 0)
             {
                 while (difference == 0)
                 {
                     el1++;
                     el2++;
-                    difference = comparing(text, &el1, &el2, &string);
+                    difference = comparing(addresses, &el1, &el2, &string);
                 }
                 if (difference > 0)
-                    change_srt(text, &string);
+                    change_str(addresses, &string);
             }
         }
     }
 }
 
-int comparing(char text[][AMOUNT_OF_ELEMENTS_IN_STR], int* el1, int* el2, int* string)
+int comparing(char** addresses, int* el1, int* el2, int* string)
 {
-    if (isalpha(text[*string][*el1]) == 0)
+    if (isalpha(addresses[*string][*el1]) == 0)
         *el1++;
 
-    if (isalpha(text[*string+1][*el2]) == 0)
+    if (isalpha(addresses[*string+1][*el2]) == 0)
         *el2++;
         
 
-    if (tolower(text[*string][*el1]) > tolower(text[*string+1][*el2]))
+    if (tolower(addresses[*string][*el1]) > tolower(addresses[*string+1][*el2]))
         return GREATER;
-    else if (tolower(text[*string][*el1]) == tolower(text[*string+1][*el2]))
+    else if (tolower(addresses[*string][*el1]) == tolower(addresses[*string+1][*el2]))
         return EQUAL;
     else
         return LESS;
 }
 
-void change_srt(char text[][AMOUNT_OF_ELEMENTS_IN_STR], int* string)
+void change_str(char** addresses, int* string)
 {
-    for (int i = 0; i < AMOUNT_OF_ELEMENTS_IN_STR; i++)
-    {     
-        char temp = 0;
-        temp = text[*string][i];
-        text[*string][i] = text[*string+1][i];
-        text[*string+1][i] = temp;
+    char* temp = 0;
+    temp = addresses[*string];
+    addresses[*string] = addresses[*string+1];
+    addresses[*string+1] = temp;
+}
+
+void print_text(char** addresses)
+{
+    size_t str = 0;
+    while (str < AMOUNT_OF_STR)
+    {
+        char* s = *(addresses + str);
+        printf("%s\n", s);
+        str++;
     }
+}
+
+void filling_the_array_of_addresses(char* text, long file_size, char** addresses)
+{
+    size_t element = 0;
+
+    int index_of_first_element_in_string = 0;
+
+    *(addresses + index_of_first_element_in_string) = text + element;
+
+    while (element < file_size)
+    {
+        char* ch = text + element;
+
+        if (*ch == '\r')
+            *ch = '\0';
+
+        else if (*ch == '\n' || *ch == EOF)
+        {
+            
+            *ch = '\0';
+
+            index_of_first_element_in_string++;
+            *(addresses + index_of_first_element_in_string) = text + element + 1;
+            
+        }
+        element++;
+    }
+}
+
+void finding_amount_of_elements(long* file_size, FILE* file_pointer)
+{
+    fseek(file_pointer , 0 , SEEK_END);  
+    *file_size = ftell(file_pointer); 
+    rewind (file_pointer);
+}
+
+void free_arrays(char** addresses, char* text)
+{
+    free(addresses);
+    free(text);
 }
