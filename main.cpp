@@ -1,6 +1,13 @@
 #include <stdio.h>
 #include <ctype.h>
 
+enum ResultOfComparing
+{
+    LESS = -1,
+    EQUAL = 0,
+    GREATER = 1
+};
+
 const int AMOUNT_OF_STR = 14;
 const int AMOUNT_OF_ELEMENTS_IN_STR = 200;
 
@@ -21,7 +28,7 @@ int main()
     "its work, its torture, its enjoyment,\n",
     "what occupied his chafing powers\n",
     "throughout the boredom of the hours -\n",
-    " this was the science of that passion\n",
+    "this was the science of that passion\n",
     "which Ovid sang, for which the bard,\n",
     "condemned to a lifetime of hard,\n",
     "ended his wild career of fashion\n",
@@ -37,7 +44,7 @@ int main()
     return 0;
 }
 
-void print(char text[][AMOUNT_OF_ELEMENTS_IN_STR])
+void print(char text[][AMOUNT_OF_ELEMENTS_IN_STR]) //функция будет заменена
 {
     for (size_t str = 0; str < AMOUNT_OF_STR; str++)
     {
@@ -50,7 +57,6 @@ void print(char text[][AMOUNT_OF_ELEMENTS_IN_STR])
         while(text[str][i] != '\0');
         i = 0;
     }
-
 }
 
 void sorting(char text[][AMOUNT_OF_ELEMENTS_IN_STR])
@@ -91,11 +97,11 @@ int comparing(char text[][AMOUNT_OF_ELEMENTS_IN_STR], int* el1, int* el2, int* s
         
 
     if (tolower(text[*string][*el1]) > tolower(text[*string+1][*el2]))
-        return 1;
+        return GREATER;
     else if (tolower(text[*string][*el1]) == tolower(text[*string+1][*el2]))
-        return 0;
+        return EQUAL;
     else
-        return -1;
+        return LESS;
 }
 
 void change_srt(char text[][AMOUNT_OF_ELEMENTS_IN_STR], int* string)
