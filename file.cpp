@@ -2,55 +2,79 @@
 #include <stdlib.h>
 const int AMOUNT_OF_STR = 14;
 
-void print(char** addresses, int AMOUNT_OF_STR);
-void finding_str(char* text, long file_size, char** addresses);
+void finding_amount_of_elements(long* file_size, FILE* file_pointer);
+
+void print_text(char** addresses);
+void filling_the_array_of_addresses(char* text, long file_size, char** addresses);
+void free_arrays(char** addresses, char* text);
 
 int main()
 {
-    FILE* file_pointer = fopen("text.txt", "r");
+    FILE* file_pointer = fopen("text.txt", "rb");
 
-    fseek(file_pointer , 0 , SEEK_END);  
-    long file_size = ftell(file_pointer); 
-    rewind (file_pointer);
+    long file_size = 0;
+    finding_amount_of_elements(&file_size, file_pointer);
 
     char* text = (char*)calloc(file_size, sizeof(char));
     char** addresses = (char**)calloc(AMOUNT_OF_STR, sizeof(char*));
-    finding_str(text, file_size, addresses);
     
     fread (text, sizeof(char), file_size, file_pointer);
 
-    print(addresses, file_size);
-    free(text);
+    filling_the_array_of_addresses(text, file_size, addresses);
+    print_text(addresses);
+
+    free_arrays(addresses, text);
+
     return 0;
 }
 
-void print(char** addresses, int AMOUNT_OF_STR)
+void print_text(char** addresses)
 {
     size_t str = 0;
     while (str < AMOUNT_OF_STR)
     {
-        //printf("new str\n");
         char* s = *(addresses + str);
-        printf("%s", s);
+        printf("%s\n", s);
         str++;
     }
 }
 
-void finding_str(char* text, long file_size, char** addresses)
+void filling_the_array_of_addresses(char* text, long file_size, char** addresses)
 {
     size_t element = 0;
 
-    int i = 0;
-    *(addresses + i) = text + element;
+    int index_of_first_element_in_string = 0;
+
+    *(addresses + index_of_first_element_in_string) = text + element;
 
     while (element < file_size)
     {
         char* ch = text + element;
-        if (*ch == '\n')
+
+        if (*ch == '\r')
+            *ch = '\0';
+
+        else if (*ch == '\n' || *ch == EOF)
         {
-            *(addresses + i) = text + element + 1;
-            i++;
+            *ch = '\0';
+            //printf("there is symbol\n");
+            
+            index_of_first_element_in_string++;
+            *(addresses + index_of_first_element_in_string) = text + element + 1;
         }
         element++;
     }
+}
+
+void finding_amount_of_elements(long* file_size, FILE* file_pointer)
+{
+    fseek(file_pointer , 0 , SEEK_END);  
+    *file_size = ftell(file_pointer); 
+    rewind (file_pointer);
+}
+
+void free_arrays(char** addresses, char* text)
+{
+    free(addresses);
+    free(text);
 }
