@@ -50,7 +50,7 @@ int main()
 
     print_text(&text_for_sorting);
     forward_sorting(&text_for_sorting);
-    //print_text(&text_for_sorting);
+    print_text(&text_for_sorting);
 
     free_arrays(&text_for_sorting, &original_text);
 
@@ -98,6 +98,7 @@ void processing_text(Data* original_text, Array* text_for_sorting) //name
         
     }
     text_for_sorting->amount_of_strings = cnt + 1;
+    //printf(" amount of str %d", text_for_sorting->amount_of_strings);
 }
 
 void filling_addresses(Data* original_text, Array* text_for_sorting)
@@ -136,25 +137,29 @@ void print_text(Array* text_for_sorting)
 
 void forward_sorting(Array* text_for_sorting) //надо сделать функцию, которая подает на выход адрес начала строки, т.е. учитывает пробелы
 {
-    for (int max_str = text_for_sorting->amount_of_strings-1; max_str > 0; max_str--)
+    for (int max_str = text_for_sorting->amount_of_strings - 1; max_str > 0; max_str--)
     {
-        //printf("max str %d", max_str);
+        //printf("max str %d\n", max_str);
 
         for (int string = 0; string < max_str; string++)
         {
+            //printf("string %d\n", string);
             int element = 0;
 
-            int difference = comparing(text_for_sorting, element, string);
+            int difference = comparing(text_for_sorting, string, element);
             //printf("dif %d", difference);
 
             while (difference == 0)
             {
+                //printf("nex symb\n");
                 element++;
-                difference = comparing(text_for_sorting, element, string);
+                difference = comparing(text_for_sorting, string, element);
             }
             if (difference > 0)
+            {
+                //printf("swap str, element %d\n", element);
                 swap_str(text_for_sorting, string);
-
+            }
         }
     }
 }
@@ -167,11 +172,16 @@ void finding_start_address(Array* text_for_sorting, int string)
 
 int comparing(Array* text_for_sorting, int string, int element)
 {
+    //printf("string in comparing  %d\n", string);
     finding_start_address(text_for_sorting, string);    //меняет адрес, переносит его к первому непробельному символу
     finding_start_address(text_for_sorting, (string+1));
 
     if (tolower(text_for_sorting->addresses[string][element]) > tolower(text_for_sorting->addresses[string+1][element]))
+    {
+        //printf("string %d el %d swap because %c > %c\n", string, element, text_for_sorting->addresses[string][element], text_for_sorting->addresses[string+1][element]);
         return GREATER;
+    }
+        
     else if (tolower(text_for_sorting->addresses[string][element]) == tolower(text_for_sorting->addresses[string+1][element]))
         return EQUAL;
     else
@@ -182,7 +192,9 @@ void swap_str(Array* text_for_sorting, int string)
 {
     char* temp = 0;
     temp = text_for_sorting->addresses[string];
+    //printf("\nstring before [%s]\n", text_for_sorting->addresses[string]);
     text_for_sorting->addresses[string] = text_for_sorting->addresses[string+1];
+    //printf("string after [%s]\n", text_for_sorting->addresses[string]);
     text_for_sorting->addresses[string+1] = temp;
 }
 
