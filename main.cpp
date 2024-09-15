@@ -31,7 +31,7 @@ void filling_addresses(Data* original_text, Array* text_for_sorting);
 void print_text(Array* text_for_sorting);
 
 void forward_sorting(Array* text_for_sorting);
-void finding_start_address(Array* text_for_sorting, int string);
+void finding_start_address(Array* text_for_sorting, int string, char** address_str);
 int comparing(Array* text_for_sorting, int string, int element);
 void swap_str(Array* text_for_sorting, int string);
 
@@ -195,10 +195,10 @@ void reverse_sorting(Array* text_for_sorting)
     }
 }
 
-void finding_start_address(Array* text_for_sorting, int string)
+void finding_start_address(Array* text_for_sorting, int string, char** address_str)
 {
     if (isspace(*(text_for_sorting->addresses[string])) != 0)
-        text_for_sorting->addresses[string] = text_for_sorting->addresses[string] + 1;
+        *address_str = *address_str + sizeof(char);
 }
 
 int reverse_comparing(Array* text_for_sorting, int string, int element)
@@ -219,15 +219,18 @@ int reverse_comparing(Array* text_for_sorting, int string, int element)
 
 int comparing(Array* text_for_sorting, int string, int element)
 {
-    finding_start_address(text_for_sorting, string);    //меняет адрес, переносит его к первому непробельному символу
-    finding_start_address(text_for_sorting, (string+1));
+    char* address_str1 = text_for_sorting->addresses[string];
+    char* address_str2 = text_for_sorting->addresses[string+1];
 
-    if (tolower(text_for_sorting->addresses[string][element]) > tolower(text_for_sorting->addresses[string+1][element]))
+    finding_start_address(text_for_sorting, string, &address_str1);    //меняет адрес, переносит его к первому непробельному символу
+    finding_start_address(text_for_sorting, (string+1), &address_str2);
+
+    if (tolower(*(address_str1 + element)) > tolower(*(address_str2 + element)))
     {
         return GREATER;
     }
         
-    else if (tolower(text_for_sorting->addresses[string][element]) == tolower(text_for_sorting->addresses[string+1][element]))
+    else if (tolower(*(address_str1 + element)) == tolower(*(address_str2 + element)))
         return EQUAL;
     else
         return LESS;
@@ -235,6 +238,9 @@ int comparing(Array* text_for_sorting, int string, int element)
 
 void rev_swap_str(Array* text_for_sorting, int string)
 {
+    //finding_start_address(text_for_sorting, string);    //меняет адрес, переносит его к первому непробельному символу
+    //finding_start_address(text_for_sorting, (string+1));
+
     char* temp = 0;
     temp = text_for_sorting->addresses[string];
     //printf("\nstring before [%s]\n", text_for_sorting->addresses[string]);
