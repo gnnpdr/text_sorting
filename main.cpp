@@ -31,13 +31,14 @@ void filling_addresses(Data* original_text, Array* text_for_sorting);
 void print_text(Array* text_for_sorting);
 
 void forward_sorting(Array* text_for_sorting);
-void finding_start_address(Array* text_for_sorting, int string, char** address_str);
+void finding_start_address(char** address_str);
 int comparing(Array* text_for_sorting, int string, int element);
 void swap_str(Array* text_for_sorting, int string);
 
 void reverse_sorting(Array* text_for_sorting);
 int reverse_comparing(Array* text_for_sorting, int string, int element);
 void rev_swap_str(Array* text_for_sorting, int string);
+void reverse_finding_start_address(char** address_str); 
 
 void free_arrays(Array* text_for_sorting, Data* original_text);
 
@@ -52,16 +53,16 @@ int main()
     processing_text(&original_text, &text_for_sorting);
     filling_addresses(&original_text, &text_for_sorting);
 
-    //print_text(&text_for_sorting);
+    print_text(&text_for_sorting);
 
     forward_sorting(&text_for_sorting);
     //printf("print forward sorting\n");
     print_text(&text_for_sorting);
     //printf("starts doing new test\n");
 
-    reverse_sorting(&text_for_sorting);
+    //reverse_sorting(&text_for_sorting);
     //printf("print reverse sorting\n");
-    print_text(&text_for_sorting);
+    //print_text(&text_for_sorting);
 
     free_arrays(&text_for_sorting, &original_text);
 
@@ -91,6 +92,7 @@ void processing_text(Data* original_text, Array* text_for_sorting) //name
 {
     size_t symbol = 0;
     size_t cnt = 0;
+    printf("start of string %d - %p\n", cnt, original_text->text);
 
     while (symbol < original_text->file_size)
     {
@@ -103,6 +105,7 @@ void processing_text(Data* original_text, Array* text_for_sorting) //name
         {
             *ch = '\0';
             cnt++;
+            printf("start of string %d - %p\n", cnt, original_text->text + symbol + 1);
         }
         symbol++;
         
@@ -144,89 +147,35 @@ void print_text(Array* text_for_sorting)
     }
 }
 
-void forward_sorting(Array* text_for_sorting) //надо сделать функцию, которая подает на выход адрес начала строки, т.е. учитывает пробелы
-{
-    for (int max_str = text_for_sorting->amount_of_strings - 1; max_str > 0; max_str--)
+void finding_start_address(char** address_str)
+{   
+    //printf("start address %p\n", *address_str);
+
+    while (isalpha(**address_str) == 0)
     {
-
-        for (int string = 0; string < max_str; string++)
-        {
-            int element = 0;
-
-            int difference = comparing(text_for_sorting, string, element);
-
-            while (difference == 0)
-            {
-                element++;
-                difference = comparing(text_for_sorting, string, element);
-            }
-            if (difference > 0)
-            {
-                swap_str(text_for_sorting, string);
-            }
-        }
-    }
-}
-
-void reverse_sorting(Array* text_for_sorting) 
-{
-    for (int max_str = text_for_sorting->amount_of_strings - 1; max_str > 0; max_str--)
-    {
-        //printf("max str %d\n", max_str);
-        for (int string = 1; string < max_str - 1; string++)
-        {
-            //printf("string %d {%s} \n", string, text_for_sorting->addresses[string]);
-            int element = 0;
-            
-            int difference = reverse_comparing(text_for_sorting, string + 1, element);
-
-            while (difference == 0)
-            {
-                //printf("nex symb\n");
-                element++;
-                difference = reverse_comparing(text_for_sorting, string + 1, element);
-            }
-            if (difference > 0)
-            {
-                //printf("swap str, element %d\n", element);
-                rev_swap_str(text_for_sorting, string);
-            }
-        }
-    }
-}
-
-void finding_start_address(Array* text_for_sorting, int string, char** address_str)
-{
-    if (isspace(*(text_for_sorting->addresses[string])) != 0)
+        //printf("next symb in address\n");
         *address_str = *address_str + sizeof(char);
-}
-
-int reverse_comparing(Array* text_for_sorting, int string, int element)
-{
-    //printf("string in comparing %d\n", string);
-
-    if (tolower(*(text_for_sorting->addresses[string] - element)) > tolower(*(text_for_sorting->addresses[string+1] - element)))
-    {
-        //printf("string %d el %d swap because %c > %c\n", string, element, text_for_sorting->addresses[string][element], text_for_sorting->addresses[string+1][element]);
-        return GREATER;
     }
-        
-    else if (tolower(*(text_for_sorting->addresses[string] - element)) == tolower(*(text_for_sorting->addresses[string+1] - element)))
-        return EQUAL;
-    else
-        return LESS;
+
+    //printf("end address %p\n", *address_str);
 }
+
 
 int comparing(Array* text_for_sorting, int string, int element)
 {
     char* address_str1 = text_for_sorting->addresses[string];
+    
     char* address_str2 = text_for_sorting->addresses[string+1];
 
-    finding_start_address(text_for_sorting, string, &address_str1);    //меняет адрес, переносит его к первому непробельному символу
-    finding_start_address(text_for_sorting, (string+1), &address_str2);
+    //printf("string %d\n", string);
+    finding_start_address(&address_str1);
+
+    //printf("string %d\n", string + 1);
+    finding_start_address(&address_str2);
 
     if (tolower(*(address_str1 + element)) > tolower(*(address_str2 + element)))
     {
+        //printf("string %d el %d swap because %c > %c\n", string, element, *(address_str1 + element), *(address_str2 + element));
         return GREATER;
     }
         
@@ -236,19 +185,108 @@ int comparing(Array* text_for_sorting, int string, int element)
         return LESS;
 }
 
-void rev_swap_str(Array* text_for_sorting, int string)
+void forward_sorting(Array* text_for_sorting) //надо сделать функцию, которая подает на выход адрес начала строки, т.е. учитывает пробелы
 {
-    //finding_start_address(text_for_sorting, string);    //меняет адрес, переносит его к первому непробельному символу
-    //finding_start_address(text_for_sorting, (string+1));
+    for (int max_str = text_for_sorting->amount_of_strings - 1; max_str > 0; max_str--)
+    {
+        //printf("max str %d\n", max_str);
+        for (int string = 0; string < max_str; string++)
+        {
+            //printf("string %d {%s} \n", string, text_for_sorting->addresses[string]);
 
-    char* temp = 0;
-    temp = text_for_sorting->addresses[string];
-    //printf("\nstring before [%s]\n", text_for_sorting->addresses[string]);
-    text_for_sorting->addresses[string] = text_for_sorting->addresses[string+1];
-    //printf("string after [%s]\n", text_for_sorting->addresses[string]);
-    text_for_sorting->addresses[string+1] = temp;
+            int element = 0;
+
+            int difference = comparing(text_for_sorting, string, element);
+
+            while (difference == 0)
+            {
+                //printf("next symb\n");
+                element++;
+                difference = comparing(text_for_sorting, string, element);
+            }
+            if (difference > 0)
+            {
+                //printf("swap str, element %d\n", element);
+                swap_str(text_for_sorting, string);
+            }
+                
+        }
+    }
 }
 
+
+/*void reverse_finding_start_address(char** address_str)
+{
+    printf("start address %p\n", *address_str);
+    while (isalpha(**address_str) == 0)
+    {
+        printf("symb [%c]", **address_str);
+        printf("next symb in address\n");
+        *address_str = *address_str - sizeof(char);
+    }
+    printf("end address %p\n", *address_str);
+}
+
+int reverse_comparing(Array* text_for_sorting, int string, int element)
+{
+    printf("string in comparing %d\n", string);
+
+    char* address_str1 = text_for_sorting->addresses[string] - 1;
+    char* address_str2 = text_for_sorting->addresses[string+1] - 1;
+
+    printf("string %d\n", string);
+    reverse_finding_start_address(&address_str1);    //меняет адрес, переносит его к первому непробельному символу
+    printf("string %d\n", string + 1);
+    reverse_finding_start_address(&address_str2);
+
+    if (tolower(*(address_str1 - element)) > tolower(*(address_str2 - element)))
+    {
+        printf("string %d el %d swap because %c > %c\n", string, element, *(address_str1 + element), *(address_str2 + element));
+        return GREATER;
+    }
+        
+    else if (tolower(*(address_str1 - element)) == tolower(*(address_str2 - element)))
+        return EQUAL;
+    else
+        return LESS;
+}
+void reverse_sorting(Array* text_for_sorting) 
+{
+    for (int max_str = text_for_sorting->amount_of_strings - 1; max_str > 0; max_str--)
+    {
+        printf("max str %d\n", max_str);
+        for (int string = 0; string < max_str - 1; string++)
+        {
+            printf("string %d {%s} \n", string, text_for_sorting->addresses[string]);
+            int element = 0;
+            
+            int difference = reverse_comparing(text_for_sorting, string + 1, element);
+
+            while (difference == 0)
+            {
+                printf("next symb\n");
+                element++;
+                difference = reverse_comparing(text_for_sorting, string + 1, element);
+            }
+            if (difference > 0)
+            {
+                printf("swap str, element %d\n", element);
+                rev_swap_str(text_for_sorting, string);
+            }
+        }
+    }
+}
+
+void rev_swap_str(Array* text_for_sorting, int string)
+{
+    char* temp = 0;
+    temp = text_for_sorting->addresses[string];
+    printf("\nstring before [%s]\n", text_for_sorting->addresses[string]);
+    text_for_sorting->addresses[string] = text_for_sorting->addresses[string+1];
+    printf("string after [%s]\n", text_for_sorting->addresses[string]);
+    text_for_sorting->addresses[string+1] = temp;
+}
+*/
 void swap_str(Array* text_for_sorting, int string)
 {
     char* temp = 0;
@@ -256,7 +294,6 @@ void swap_str(Array* text_for_sorting, int string)
     text_for_sorting->addresses[string] = text_for_sorting->addresses[string+1];
     text_for_sorting->addresses[string+1] = temp;
 }
-
 
 void free_arrays(Array* text_for_sorting, Data* original_text)
 {
