@@ -50,7 +50,7 @@ int main()
 
     print_text(&text_for_sorting);
     forward_sorting(&text_for_sorting);
-    print_text(&text_for_sorting);
+    //print_text(&text_for_sorting);
 
     free_arrays(&text_for_sorting, &original_text);
 
@@ -66,13 +66,14 @@ void finding_amount_file_symbols(Data* original_text)
     original_text->file_size = ftell(original_text->file_pointer); 
     rewind (original_text->file_pointer);
 
-    fclose(original_text->file_pointer);
 }
 
 void filling_Data(Data* original_text)
 {
     original_text->text = (char*)calloc(original_text->file_size, sizeof(char));
     fread (original_text->text, sizeof(char), original_text->file_size, original_text->file_pointer);
+
+    fclose(original_text->file_pointer);
 }
 
 void processing_text(Data* original_text, Array* text_for_sorting) //name
@@ -80,10 +81,11 @@ void processing_text(Data* original_text, Array* text_for_sorting) //name
     size_t symbol = 0;
     size_t cnt = 0;
 
-    char* ch = original_text->text + symbol;
-
     while (symbol < original_text->file_size)
     {
+        char* ch = original_text->text + symbol;
+        //printf("char %c\n", *ch);
+
         if (*ch == '\r')
             *ch = '\0';
 
@@ -93,6 +95,7 @@ void processing_text(Data* original_text, Array* text_for_sorting) //name
             cnt++;
         }
         symbol++;
+        
     }
     text_for_sorting->amount_of_strings = cnt + 1;
 }
@@ -135,24 +138,23 @@ void forward_sorting(Array* text_for_sorting) //надо сделать функ
 {
     for (int max_str = text_for_sorting->amount_of_strings-1; max_str > 0; max_str--)
     {
+        //printf("max str %d", max_str);
+
         for (int string = 0; string < max_str; string++)
         {
             int element = 0;
 
             int difference = comparing(text_for_sorting, element, string);
-            
+            //printf("dif %d", difference);
+
+            while (difference == 0)
+            {
+                element++;
+                difference = comparing(text_for_sorting, element, string);
+            }
             if (difference > 0)
                 swap_str(text_for_sorting, string);
-            else if (difference == 0)
-            {
-                while (difference == 0)
-                {
-                    element++;
-                    difference = comparing(text_for_sorting, element, string);
-                }
-                if (difference > 0)
-                    swap_str(text_for_sorting, string);
-            }
+
         }
     }
 }
