@@ -20,29 +20,23 @@ void reverse_finding_start_address(char** address_str)
     //printf("end address %p\n", *address_str);
 }
 
-int reverse_comparing(Array* text_for_sorting, const int string, const int element)
+int reverse_comparing(char* string1, char* string2)
 {
-    assert(text_for_sorting != nullptr);
-    assert(!isnan(string));
-    assert(!isnan(element));
-
-    //printf("string in comparing %d\n", string);
-
-    char* address_str1 = text_for_sorting->addresses[string];
-    char* address_str2 = text_for_sorting->addresses[string+1];
+    assert(string1 != nullptr);
+    assert(string2 != nullptr);
 
     //printf("string %d\n", string);
-    reverse_finding_start_address(&address_str1);    //меняет адрес, переносит его к первому непробельному символу
-    //printf("string %d\n", string + 1);
-    reverse_finding_start_address(&address_str2);
+    reverse_finding_start_address(&string1);    //меняет адрес, переносит его к первому непробельному символу
+    //printf("string 2\n");
+    reverse_finding_start_address(&string2);
 
-    if (tolower(*(address_str1 - element)) > tolower(*(address_str2 - element)))
+    if (tolower(*string1) > tolower(*string2))
     {
-        //printf("string %d el %d swap because %c > %c\n", string, element, *(address_str1 + element), *(address_str2 + element));
+        //printf("swap because %c > %c\n", *string1, *string2);
         return GREATER;
     }
         
-    else if (tolower(*(address_str1 - element)) == tolower(*(address_str2 - element)))
+    else if (tolower(*string1) == tolower(*string2))
         return EQUAL;
     else
         return LESS;
@@ -59,33 +53,33 @@ void reverse_sorting(Array* text_for_sorting)
         {
             //printf("string %d {%s} \n", string, text_for_sorting->addresses[string]);
             int element = 0;
-            
-            int difference = reverse_comparing(text_for_sorting, string, element);
+
+            char* string1 = &text_for_sorting->addresses[string][element];
+    
+            char* string2 = &text_for_sorting->addresses[string+1][element];
+
+            int difference = reverse_comparing(string1, string2);
 
             while (difference == 0)
             {
                 //printf("next symb\n");
-                element++;
-                difference = reverse_comparing(text_for_sorting, string, element);
+
+                string1--;
+                string2--;
+
+                difference = reverse_comparing(string1, string2);
             }
             if (difference > 0)
             {
+                string1 = text_for_sorting->addresses[string];
+                string2 = text_for_sorting->addresses[string+1];
+
                 //printf("swap str, element %d\n", element);
-                rev_swap_str(text_for_sorting, string);
+                swap_str(&string1, &string2);
+
+                text_for_sorting->addresses[string] = string1;
+                text_for_sorting->addresses[string+1] = string2;
             }
         }
     }
-}
-
-void rev_swap_str(Array* text_for_sorting, const int string)
-{
-    assert(text_for_sorting != nullptr);
-    assert(!isnan(string));
-
-    char* temp = 0;
-    temp = text_for_sorting->addresses[string];
-    //printf("\nstring before [%s]\n", text_for_sorting->addresses[string]);
-    text_for_sorting->addresses[string] = text_for_sorting->addresses[string+1];
-    //printf("string after [%s]\n", text_for_sorting->addresses[string]);
-    text_for_sorting->addresses[string+1] = temp;
 }

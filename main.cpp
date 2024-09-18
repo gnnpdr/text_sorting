@@ -23,11 +23,11 @@ int main()
     printf("print forward sorting\n\n");
     forward_sorting(&text_for_sorting);
     print_text(&text_for_sorting);
-    //printf("\n");
+    printf("\n");
 
-    //printf("print reverse sorting\n\n");
-    //reverse_sorting(&text_for_sorting);
-    //print_text(&text_for_sorting);
+    printf("print reverse sorting\n\n");
+    reverse_sorting(&text_for_sorting);
+    print_text(&text_for_sorting);
 
     free_arrays(&text_for_sorting, &original_text);
 

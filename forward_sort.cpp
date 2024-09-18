@@ -10,7 +10,7 @@ void finding_start_address(char** address_str)
 
     while (isalpha(**address_str) == 0)
     {
-        printf("next symb in address\n");
+        //printf("next symb in address\n");
         *address_str = *address_str + sizeof(char);
     }
 
@@ -32,7 +32,7 @@ int comparing(char* string1, char* string2)
 
     if (tolower(*string1) > tolower(*string2))
     {
-        printf("swap because %c > %c\n", *string1, *string2);
+        //printf("swap because %c > %c\n", *string1, *string2);
         return GREATER;
     }
         
@@ -48,15 +48,15 @@ void forward_sorting(Array* text_for_sorting) //надо сделать функ
 
     for (int max_str = text_for_sorting->amount_of_strings - 1; max_str > 0; max_str--)
     {
-        printf("max str %d\n", max_str);
+        //printf("max str %d\n", max_str);
         for (int string = 0; string < max_str; string++)
         {
-            printf("string %d {%s} \n", string, text_for_sorting->addresses[string]);
+            //printf("string %d {%s} \n", string, text_for_sorting->addresses[string]);
 
             int element = 0;
 
             char* string1 = &text_for_sorting->addresses[string][element];
-            printf("string address %p\n, address text %p\n, string %p string, '%s'", &string1, text_for_sorting->addresses[string], string1, string1);
+            //printf("string address %p\n, address text %p\n, string %p string, '%s'", &string1, text_for_sorting->addresses[string], string1, string1);
     
             char* string2 = &text_for_sorting->addresses[string+1][element];
 
@@ -74,10 +74,9 @@ void forward_sorting(Array* text_for_sorting) //надо сделать функ
             if (difference > 0)
             {
                 string1 = text_for_sorting->addresses[string];
-    
                 string2 = text_for_sorting->addresses[string+1];
 
-                printf("swap str, element %d\n", element);
+                //printf("swap str, element %d\n", element);
 
                 //printf("string1 %p\n", &string1);
                 //printf("string2 %p\n", &string2);
@@ -88,7 +87,6 @@ void forward_sorting(Array* text_for_sorting) //надо сделать функ
                 swap_str(&string1, &string2);
 
                 text_for_sorting->addresses[string] = string1;
-    
                 text_for_sorting->addresses[string+1] = string2;
             }
                 
