@@ -6,7 +6,7 @@ void finding_start_address(char** address_str)
 {   
     assert(address_str != nullptr);
 
-    //printf("start address %p\n", *address_str);
+    printf("start address %p\n", *address_str);
 
     while (isalpha(**address_str) == 0)
     {
