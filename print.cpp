@@ -4,6 +4,8 @@
 
 void print_text(Array* text_for_sorting)
 {
+    assert(text_for_sorting != nullptr);
+    
     size_t str = 0;
     while (str < text_for_sorting->amount_of_strings)
     {

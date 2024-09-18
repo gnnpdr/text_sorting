@@ -4,6 +4,8 @@
 
 void finding_start_address(char** address_str)
 {   
+    assert(address_str != nullptr);
+
     //printf("start address %p\n", *address_str);
 
     while (isalpha(**address_str) == 0)
@@ -16,8 +18,12 @@ void finding_start_address(char** address_str)
 }
 
 
-int comparing(Array* text_for_sorting, int string, int element)
+int comparing(Array* text_for_sorting, const int string, const int element)
 {
+    assert(text_for_sorting != nullptr);
+    assert(!isnan(string));
+    assert(!isnan(element));
+
     char* address_str1 = text_for_sorting->addresses[string];
     
     char* address_str2 = text_for_sorting->addresses[string+1];
@@ -42,6 +48,8 @@ int comparing(Array* text_for_sorting, int string, int element)
 
 void forward_sorting(Array* text_for_sorting) //надо сделать функцию, которая подает на выход адрес начала строки, т.е. учитывает пробелы
 {
+    assert(text_for_sorting != nullptr);
+
     for (int max_str = text_for_sorting->amount_of_strings - 1; max_str > 0; max_str--)
     {
         //printf("max str %d\n", max_str);
@@ -69,8 +77,11 @@ void forward_sorting(Array* text_for_sorting) //надо сделать функ
     }
 }
 
-void swap_str(Array* text_for_sorting, int string)
+void swap_str(Array* text_for_sorting, const int string)
 {
+    assert(text_for_sorting != nullptr);
+    assert(!isnan(string));
+
     char* temp = 0;
     temp = text_for_sorting->addresses[string];
     text_for_sorting->addresses[string] = text_for_sorting->addresses[string+1];

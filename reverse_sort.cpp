@@ -4,6 +4,8 @@
 
 void reverse_finding_start_address(char** address_str)
 {
+    assert(address_str != nullptr);
+
     //printf("start address %p\n", *address_str);
     while (**address_str != '\0')
         *address_str = *address_str + sizeof(char);
@@ -18,8 +20,12 @@ void reverse_finding_start_address(char** address_str)
     //printf("end address %p\n", *address_str);
 }
 
-int reverse_comparing(Array* text_for_sorting, int string, int element)
+int reverse_comparing(Array* text_for_sorting, const int string, const int element)
 {
+    assert(text_for_sorting != nullptr);
+    assert(!isnan(string));
+    assert(!isnan(element));
+
     //printf("string in comparing %d\n", string);
 
     char* address_str1 = text_for_sorting->addresses[string];
@@ -41,8 +47,11 @@ int reverse_comparing(Array* text_for_sorting, int string, int element)
     else
         return LESS;
 }
+
 void reverse_sorting(Array* text_for_sorting) 
 {
+    assert(text_for_sorting != nullptr);
+
     for (int max_str = text_for_sorting->amount_of_strings - 1; max_str > 0; max_str--)
     {
         //printf("max str %d\n", max_str);
@@ -68,8 +77,11 @@ void reverse_sorting(Array* text_for_sorting)
     }
 }
 
-void rev_swap_str(Array* text_for_sorting, int string)
+void rev_swap_str(Array* text_for_sorting, const int string)
 {
+    assert(text_for_sorting != nullptr);
+    assert(!isnan(string));
+
     char* temp = 0;
     temp = text_for_sorting->addresses[string];
     //printf("\nstring before [%s]\n", text_for_sorting->addresses[string]);

@@ -2,6 +2,8 @@
 #define DATA_H
 
 #include <stdlib.h>
+#include <assert.h>
+#include <math.h>
 
 struct Data
 {

@@ -4,6 +4,8 @@
 
 void processing_text(Data* original_text, Array* text_for_sorting) //name
 {
+    assert(original_text != nullptr);
+
     size_t symbol = 0;
     size_t cnt = 0;
     //printf("start of string %d - %p\n", cnt, original_text->text);
@@ -29,6 +31,8 @@ void processing_text(Data* original_text, Array* text_for_sorting) //name
 
 void filling_addresses(Data* original_text, Array* text_for_sorting)
 {   
+    assert(original_text != nullptr);
+    
     text_for_sorting->addresses = (char**)calloc(text_for_sorting->amount_of_strings, sizeof(char*)); // добавить ошибки при ненахождении места, выделить эти фии в отдельные, добавить их в структуру
     
     size_t element = 0;

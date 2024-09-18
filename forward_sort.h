@@ -13,7 +13,7 @@ enum ResultOfComparing
 
 void forward_sorting(Array* text_for_sorting);
 void finding_start_address(char** address_str);
-int comparing(Array* text_for_sorting, int string, int element);
-void swap_str(Array* text_for_sorting, int string);
+int comparing(Array* text_for_sorting, const int string, const int element);
+void swap_str(Array* text_for_sorting, const int string);
 
 #endif //FORW_SORT_H
