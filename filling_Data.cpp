@@ -11,7 +11,7 @@ void finding_amount_file_symbols(Data* original_text)
     //printf("%d\n", original_text->file_size);
 }
 
-void filling_Data(Data* original_text)
+void filling_Data(Data* original_text, bool* right_enter)
 {
     original_text->file_pointer = fopen("text1.txt", "rb");
 
@@ -20,6 +20,10 @@ void filling_Data(Data* original_text)
     //printf("%d\n", original_text->file_size);
 
     original_text->text = (char*)calloc(original_text->file_size, sizeof(char));
+    if (original_text->text == nullptr)
+    {
+        *right_enter = false;
+    }
 
     //printf("%p\n", original_text->text);
 

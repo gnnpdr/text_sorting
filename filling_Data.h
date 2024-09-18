@@ -13,6 +13,6 @@ struct Data
 };
 
 void finding_amount_file_symbols(Data* original_text);
-void filling_Data(Data* original_text);
+void filling_Data(Data* original_text, bool* right_enter);
 
 #endif //DATA_H

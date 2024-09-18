@@ -10,6 +10,6 @@ struct Array
 };
 
 void processing_text(Data* original_text, Array* text_for_sorting);
-void filling_addresses(Data* original_text, Array* text_for_sorting);
+void filling_addresses(Data* original_text, Array* text_for_sorting, bool* right_enter);
 
 #endif //ADDRESSES_H
