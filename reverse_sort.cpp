@@ -49,14 +49,13 @@ void reverse_sorting(Array* text_for_sorting)
     for (int max_str = text_for_sorting->amount_of_strings - 1; max_str > 0; max_str--)
     {
         //printf("max str %d\n", max_str);
-        for (int string = 0; string < max_str; string++)
+        for (int string_index = 0; string_index < max_str; string_index++)
         {
             //printf("string %d {%s} \n", string, text_for_sorting->addresses[string]);
             int element = 0;
 
-            char* string1 = &text_for_sorting->addresses[string][element];
-    
-            char* string2 = &text_for_sorting->addresses[string+1][element];
+            char* string1 = text_for_sorting->addresses[string_index].start + element;
+            char* string2 = text_for_sorting->addresses[string_index + 1].start + element;
 
             int difference = reverse_comparing(string1, string2);
 
@@ -71,14 +70,14 @@ void reverse_sorting(Array* text_for_sorting)
             }
             if (difference > 0)
             {
-                string1 = text_for_sorting->addresses[string];
-                string2 = text_for_sorting->addresses[string+1];
+                string1 = text_for_sorting->addresses[string_index].start;
+                string2 = text_for_sorting->addresses[string_index + 1].start;
 
                 //printf("swap str, element %d\n", element);
                 swap_str(&string1, &string2);
 
-                text_for_sorting->addresses[string] = string1;
-                text_for_sorting->addresses[string+1] = string2;
+                text_for_sorting->addresses[string_index].start = string1;
+                text_for_sorting->addresses[string_index + 1].start = string2;
             }
         }
     }

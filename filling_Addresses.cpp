@@ -33,16 +33,16 @@ void filling_addresses(Data* original_text, Array* text_for_sorting, bool* right
 {   
     assert(original_text != nullptr);
     
-    text_for_sorting->addresses = (char**)calloc(text_for_sorting->amount_of_strings, sizeof(char*)); // добавить ошибки при ненахождении места, выделить эти фии в отдельные, добавить их в структуру
+    text_for_sorting->addresses = (StringParametres*)calloc(text_for_sorting->amount_of_strings, sizeof(StringParametres));
     if (text_for_sorting->addresses == nullptr)
     {
         *right_enter = false;
     }
 
     size_t element = 0;
-    int index_of_first_element_in_string = 0;
+    int string_index = 0;
 
-    *(text_for_sorting->addresses + index_of_first_element_in_string) = original_text->text + element;
+    text_for_sorting->addresses[string_index].start = original_text->text + element;
 
     while (element < original_text->file_size)
     {
@@ -50,8 +50,9 @@ void filling_addresses(Data* original_text, Array* text_for_sorting, bool* right
 
         if (*ch == '\0')
         {
-            index_of_first_element_in_string++;
-            *(text_for_sorting->addresses + index_of_first_element_in_string) = original_text->text + element + 2;
+            string_index++;
+            text_for_sorting->addresses[string_index].end = original_text->text + element;
+            text_for_sorting->addresses[string_index].start = original_text->text + element + 2;
             element++;
         }
         element++;

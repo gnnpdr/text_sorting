@@ -13,6 +13,8 @@ int main()
 
     Data original_text = {};
     Array text_for_sorting = {};
+    
+    int amount_of_strings = 0;
 
     filling_Data(&original_text, &right_enter);
     if (right_enter == false)
