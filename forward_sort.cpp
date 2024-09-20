@@ -5,7 +5,7 @@
 void finding_start_address(char** address_str)
 {   
     assert(address_str != nullptr);
-    
+
     while (isalpha(**address_str) == 0)
         *address_str = *address_str + sizeof(char);
 }
@@ -66,7 +66,7 @@ void forward_sorting(Array* text_for_sorting)
                 string_1 = text_for_sorting->addresses[string_index];
                 string_2 = text_for_sorting->addresses[string_index + 1];
 
-                swap_str(&string_1, &string_2);
+                swap(&string_1, &string_2);
 
                 text_for_sorting->addresses[string_index] = string_1;
                 text_for_sorting->addresses[string_index + 1] = string_2;
@@ -75,7 +75,7 @@ void forward_sorting(Array* text_for_sorting)
     }
 }
 
-void swap_str(StringParametres* string1, StringParametres* string2)
+void swap(StringParametres* string1, StringParametres* string2)
 {
     assert(string1 != nullptr);
     assert(string2 != nullptr);

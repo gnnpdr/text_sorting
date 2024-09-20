@@ -13,13 +13,11 @@ int main()
 
     Data original_text = {};
     Array text_for_sorting = {};
-    
-    int amount_of_strings = 0;
 
     filling_Data(&original_text, &right_enter);
     if (right_enter == false)
     {
-        printf("there is problem with capacity\n");
+        printf("there is problem\n");
         return 1;
     }
     
@@ -27,7 +25,7 @@ int main()
     filling_addresses(&original_text, &text_for_sorting, &right_enter);
     if (right_enter == false)
     {
-        printf("there is problem with capacity\n");
+        printf("there is problem\n");
         return 1;
     }
 

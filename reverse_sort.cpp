@@ -58,7 +58,7 @@ void reverse_sorting(Array* text_for_sorting)
                 string_1 = text_for_sorting->addresses[string_index];
                 string_2 = text_for_sorting->addresses[string_index + 1];
 
-                swap_str(&string_1, &string_2);
+                swap(&string_1, &string_2);
 
                 text_for_sorting->addresses[string_index] = string_1;
                 text_for_sorting->addresses[string_index + 1] = string_2;
