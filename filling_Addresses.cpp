@@ -8,7 +8,6 @@ void processing_text(Data* original_text, Array* text_for_sorting) //name
 
     size_t symbol = 0;
     size_t cnt = 0;
-    //printf("start of string %d - %p\n", cnt, original_text->text);
 
     while (symbol < original_text->file_size)
     {
@@ -21,7 +20,6 @@ void processing_text(Data* original_text, Array* text_for_sorting) //name
         {
             *ch = '\0';
             cnt++;
-            //printf("start of string %d - %p\n", cnt, original_text->text + symbol + 1);
         }
         symbol++;
         
@@ -47,14 +45,18 @@ void filling_addresses(Data* original_text, Array* text_for_sorting, bool* right
     while (element < original_text->file_size)
     {
         char* ch = original_text->text + element;
+        //printf("%c", *ch);
 
         if (*ch == '\0')
         {
-            string_index++;
+            //printf("\n new is here\n");
             text_for_sorting->addresses[string_index].end = original_text->text + element;
+            string_index++;
             text_for_sorting->addresses[string_index].start = original_text->text + element + 2;
             element++;
         }
         element++;
     }
+    
+    text_for_sorting->addresses[string_index].end = original_text->text + element - 1;
 }

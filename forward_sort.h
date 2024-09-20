@@ -14,6 +14,6 @@ enum ResultOfComparing
 void forward_sorting(Array* text_for_sorting);
 void finding_start_address(char** address_str);
 int comparing(char* string1, char* string2);
-void swap_str(char** string1, char** string2);
+void swap_str(StringParametres* string1, StringParametres* string2);
 
 #endif //FORW_SORT_H
