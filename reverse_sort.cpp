@@ -18,13 +18,17 @@ int reverse_comparing(char* string1, char* string2)
     reverse_finding_start_address(&string1); 
     reverse_finding_start_address(&string2);
 
+    if (tolower(*string1) == tolower(*string2))
+    {
+        while(tolower(*string1) == tolower(*string2))
+        {
+            string1--;
+            string2--;
+        }
+    }
+
     if (tolower(*string1) > tolower(*string2))
         return GREATER;
-        
-    else if (tolower(*string1) == tolower(*string2))
-        return EQUAL;
-    else
-        return LESS;
 }
 
 void reverse_sorting(Array* const text_for_sorting) 
@@ -35,22 +39,12 @@ void reverse_sorting(Array* const text_for_sorting)
     {
         for (int string_index = 0; string_index < max_str; string_index++)
         {
-            int element = 0;
-
             char* string1 = text_for_sorting->addresses[string_index].end;
             char* string2 = text_for_sorting->addresses[string_index + 1].end;
-            //printf("str 1 %p, str %p\n", string1, string2);
 
             int difference = reverse_comparing(string1, string2);
 
-            while (difference == 0)
-            {
-                string1--;
-                string2--;
-
-                difference = reverse_comparing(string1, string2);
-            }
-            if (difference > 0)
+            if (difference == GREATER)
             {
                 struct StringParametres string_1 = {};
                 struct StringParametres string_2 = {};

@@ -3,10 +3,11 @@
 #include "print.h"
 
 void print_text(Array* const text_for_sorting, int* const opening_cnt, int* const cnt, bool* const right_enter) //надо сделать нормальные названия да и вообще, может, bool перемнную.
-{                                                                                                         //или придумать метод поумнее, хехе.
+{                                                                                                               //или придумать метод поумнее, хехе.
     assert(text_for_sorting != nullptr);
     assert(opening_cnt != nullptr);
     assert(cnt != nullptr);
+    assert(right_enter != nullptr);
 
     FILE* end_file_pointer = 0;
     

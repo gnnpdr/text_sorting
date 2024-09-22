@@ -4,14 +4,18 @@
 
 void finding_amount_file_symbols(Data* const original_text)
 {
+    assert(original_text != nullptr);
+
     fseek(original_text->file_pointer , 0 , SEEK_END);  
     original_text->file_size = ftell(original_text->file_pointer); 
     rewind (original_text->file_pointer);
-
 }
 
-void filling_Data(Data* const  original_text, bool* const right_enter)
+void filling_Data(Data* const original_text, bool* const right_enter)
 {
+    assert(original_text != nullptr);
+    assert(right_enter != nullptr);
+
     original_text->file_pointer = fopen("text.txt", "rb");
     if (original_text->file_pointer == nullptr)
     {

@@ -5,6 +5,7 @@
 void processing_text(Data* const original_text, Array* const text_for_sorting)
 {
     assert(original_text != nullptr);
+    assert(text_for_sorting != nullptr);
 
     size_t symbol = 0;
     size_t cnt = 0;
@@ -22,14 +23,16 @@ void processing_text(Data* const original_text, Array* const text_for_sorting)
             cnt++;
         }
         symbol++;
-        
     }
+
     text_for_sorting->amount_of_strings = cnt + 1;
 }
 
 void filling_addresses(Data* const original_text, Array* const text_for_sorting, bool* const right_enter)
 {   
     assert(original_text != nullptr);
+    assert(text_for_sorting != nullptr);
+    assert(right_enter != nullptr);
     
     text_for_sorting->addresses = (StringParametres*)calloc(text_for_sorting->amount_of_strings, sizeof(StringParametres));
     if (text_for_sorting->addresses == nullptr)
