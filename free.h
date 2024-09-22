@@ -3,6 +3,6 @@
 
 #include "reverse_sort.h"
 
-void free_arrays(Array* text_for_sorting, Data* original_text);
+void free_arrays(Array* const text_for_sorting, Data* const original_text);
 
 #endif //FREE_H

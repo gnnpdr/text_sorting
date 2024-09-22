@@ -27,7 +27,7 @@ int reverse_comparing(char* string1, char* string2)
         return LESS;
 }
 
-void reverse_sorting(Array* text_for_sorting) 
+void reverse_sorting(Array* const text_for_sorting) 
 {
     assert(text_for_sorting != nullptr);
 

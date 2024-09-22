@@ -15,7 +15,7 @@ struct StringParametres
     char* end;
 };
 
-void processing_text(Data* original_text, Array* text_for_sorting);
-void filling_addresses(Data* original_text, Array* text_for_sorting, bool* right_enter);
+void processing_text(Data* const original_text, Array* const text_for_sorting);
+void filling_addresses(Data* const original_text, Array* const text_for_sorting, bool* const right_enter);
 
 #endif //ADDRESSES_H

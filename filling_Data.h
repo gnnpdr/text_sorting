@@ -12,7 +12,7 @@ struct Data
     char* text;
 };
 
-void finding_amount_file_symbols(Data* original_text);
-void filling_Data(Data* original_text, bool* right_enter);
+void finding_amount_file_symbols(Data* const original_text);
+void filling_Data(Data* const original_text, bool* const right_enter);
 
 #endif //DATA_H

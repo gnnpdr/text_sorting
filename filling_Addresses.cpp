@@ -2,7 +2,7 @@
 
 #include "filling_Addresses.h"
 
-void processing_text(Data* original_text, Array* text_for_sorting) //name
+void processing_text(Data* const original_text, Array* const text_for_sorting)
 {
     assert(original_text != nullptr);
 
@@ -27,14 +27,16 @@ void processing_text(Data* original_text, Array* text_for_sorting) //name
     text_for_sorting->amount_of_strings = cnt + 1;
 }
 
-void filling_addresses(Data* original_text, Array* text_for_sorting, bool* right_enter)
+void filling_addresses(Data* const original_text, Array* const text_for_sorting, bool* const right_enter)
 {   
     assert(original_text != nullptr);
     
     text_for_sorting->addresses = (StringParametres*)calloc(text_for_sorting->amount_of_strings, sizeof(StringParametres));
     if (text_for_sorting->addresses == nullptr)
     {
+        printf("not enough space for the program to run\n");
         *right_enter = false;
+        return;
     }
 
     size_t element = 0;

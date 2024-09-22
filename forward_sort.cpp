@@ -34,7 +34,7 @@ int comparing(char* string1, char* string2)
 
 }
 
-void forward_sorting(Array* text_for_sorting)
+void forward_sorting(Array* const text_for_sorting)
 {
     assert(text_for_sorting != nullptr);
 
@@ -75,7 +75,7 @@ void forward_sorting(Array* text_for_sorting)
     }
 }
 
-void swap(StringParametres* string1, StringParametres* string2)
+void swap(StringParametres* const string1, StringParametres* const string2)
 {
     assert(string1 != nullptr);
     assert(string2 != nullptr);

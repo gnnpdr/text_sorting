@@ -3,6 +3,6 @@
 
 #include "filling_Addresses.h"
 
-void print_text(Array* text_for_sorting, int* opening_cnt, int* cnt);
+void print_text(Array* const text_for_sorting, int* const opening_cnt, int* const cnt, bool* const right_enter);
 
 #endif //PRINT_H

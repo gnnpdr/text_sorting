@@ -2,9 +2,11 @@
 
 #include "print.h"
 
-void print_text(Array* text_for_sorting, int* opening_cnt, int* cnt)
-{
+void print_text(Array* const text_for_sorting, int* const opening_cnt, int* const cnt, bool* const right_enter) //надо сделать нормальные названия да и вообще, может, bool перемнную.
+{                                                                                                         //или придумать метод поумнее, хехе.
     assert(text_for_sorting != nullptr);
+    assert(opening_cnt != nullptr);
+    assert(cnt != nullptr);
 
     FILE* end_file_pointer = 0;
     
@@ -12,9 +14,21 @@ void print_text(Array* text_for_sorting, int* opening_cnt, int* cnt)
     {
         case 0:
             end_file_pointer = fopen("end_text.txt", "wb");
+            if (end_file_pointer == nullptr)
+            {
+                *right_enter = false;
+                printf("file wasn't opened\n");
+                return;
+            }
             break;
         default:
             end_file_pointer = fopen("end_text.txt", "ab");
+            if (end_file_pointer == nullptr)
+            {
+                *right_enter = false;
+                printf("file wasn't opened\n");
+                return;
+            }
             break;
     }
 

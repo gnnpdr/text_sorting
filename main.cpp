@@ -14,7 +14,7 @@ int main()
     int opening_cnt = 0;
     int cnt = 0;
 
-    printf("main opening %d, cnt %d\n", opening_cnt, cnt);
+    //printf("main opening %d, cnt %d\n", opening_cnt, cnt);
 
     Data original_text = {};
     Array text_for_sorting = {};
@@ -26,7 +26,7 @@ int main()
         return 1;
     }
     
-    processing_text(&original_text, &text_for_sorting);
+    processing_text(&original_text, &text_for_sorting); //надо засунуть эту функцию и слудующую в какую-то одну, занимающуюся этой структурой.
     filling_addresses(&original_text, &text_for_sorting, &right_enter);
     if (right_enter == false)
     {
@@ -38,12 +38,12 @@ int main()
     //printf("\n");
 
     forward_sorting(&text_for_sorting);
-    print_text(&text_for_sorting, &opening_cnt, &cnt);
-    printf("main first run opening %d, cnt %d\n", opening_cnt, cnt);
+    print_text(&text_for_sorting, &opening_cnt, &cnt, &right_enter);
+    //printf("main first run opening %d, cnt %d\n", opening_cnt, cnt);
 
     reverse_sorting(&text_for_sorting);
-    print_text(&text_for_sorting, &opening_cnt, &cnt);
-    printf("main sec run opening %d, cnt %d\n", opening_cnt, cnt);
+    print_text(&text_for_sorting, &opening_cnt, &cnt, &right_enter);
+    //printf("main sec run opening %d, cnt %d\n", opening_cnt, cnt);
 
     free_arrays(&text_for_sorting, &original_text);
 
