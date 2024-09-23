@@ -14,12 +14,10 @@ void sorting(comparing_t comparing, Array* const text_for_sorting)
             struct StringParametres string_1 = text_for_sorting->addresses[string_index];
             struct StringParametres string_2 = text_for_sorting->addresses[string_index + 1];
 
-            int difference = comparing(&string_1, &string_2); //comparing будет меняться в зависимости от аргумента функции
+            int difference = comparing(&string_1, &string_2); 
 
             if (difference == GREATER)
             {
-                //struct StringParametres string_1 = {};
-                //struct StringParametres string_2 = {};
 
                 string_1 = text_for_sorting->addresses[string_index];
                 string_2 = text_for_sorting->addresses[string_index + 1];
@@ -57,10 +55,24 @@ int forward_comparing(StringParametres* const string_1, StringParametres* const 
     {
         while(tolower(*string1) == tolower(*string2))
         {
+            if (isalpha(*string1) == 0)
+            {
+                while (isalpha(*string1) == 0)
+                    string1++;
+            }
+
+            if (isalpha(*string2) == 0)
+            {
+                while (isalpha(*string1) == 0)
+                    string2++;
+            }
+                
             string1++;
             string2++;
+           
         }
-    } 
+            
+    }
 
     if (tolower(*string1) > tolower(*string2))
         return GREATER;
@@ -85,12 +97,25 @@ int reverse_comparing(StringParametres* const string_1, StringParametres* const 
     reverse_finding_start_address(&string1); 
     reverse_finding_start_address(&string2);
 
+
     if (tolower(*string1) == tolower(*string2))
     {
         while(tolower(*string1) == tolower(*string2))
         {
             string1--;
             string2--;
+
+            if (isalpha(*string1) == 0)
+            {
+                while (isalpha(*string1) == 0)
+                    string1--;
+            }
+
+            if (isalpha(*string2) == 0)
+            {
+                while (isalpha(*string1) == 0)
+                    string2--;
+            }
         }
     }
 
