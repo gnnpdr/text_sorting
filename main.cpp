@@ -3,8 +3,7 @@
 #include "filling_Data.h"
 #include "filling_Addresses.h"
 #include "print.h"
-#include "forward_sort.h"
-#include "reverse_sort.h"
+#include "sorting.h"
 #include "free.h"
 
 int main()
@@ -13,6 +12,7 @@ int main()
 
     int opening_cnt = 0;
     int cnt = 0;
+    
 
     //printf("main opening %d, cnt %d\n", opening_cnt, cnt);
 
@@ -37,11 +37,13 @@ int main()
     //print_text(&text_for_sorting);
     //printf("\n");
 
-    forward_sorting(&text_for_sorting);
+    //forward_sorting(&text_for_sorting);
+    sorting(forward_comparing, &text_for_sorting);
     print_text(&text_for_sorting, &opening_cnt, &cnt, &right_enter);
     //printf("main first run opening %d, cnt %d\n", opening_cnt, cnt);
 
-    reverse_sorting(&text_for_sorting);
+    //reverse_sorting(&text_for_sorting);
+    sorting(reverse_comparing, &text_for_sorting);
     print_text(&text_for_sorting, &opening_cnt, &cnt, &right_enter);
     //printf("main sec run opening %d, cnt %d\n", opening_cnt, cnt);
 
@@ -51,3 +53,4 @@ int main()
 
     return 0;
 }
+

@@ -2,7 +2,7 @@
 
 #include "filling_Data.h"
 
-void finding_amount_file_symbols(Data* const original_text)
+void finding_amount_file_symbols(Data* const original_text) //заменить на функцию, указывающую свойства файла
 {
     assert(original_text != nullptr);
 

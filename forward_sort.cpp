@@ -1,4 +1,4 @@
-#include <stdio.h>
+/*#include <stdio.h>
 
 #include "forward_sort.h"
 
@@ -40,6 +40,8 @@ void forward_sorting(Array* const text_for_sorting)
     {
         for (int string_index = 0; string_index < max_str; string_index++)
         {   
+            
+
             char* string1 = text_for_sorting->addresses[string_index].start;
             char* string2 = text_for_sorting->addresses[string_index + 1].start;
 
@@ -71,4 +73,4 @@ void swap(StringParametres* const string1, StringParametres* const string2)
     temp = *string1;
     *string1 = *string2;
     *string2 = temp;
-}
+}*/

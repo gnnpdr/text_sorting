@@ -1,4 +1,4 @@
-#include <stdio.h>
+/*#include <stdio.h>
 
 #include "reverse_sort.h"
 
@@ -59,4 +59,4 @@ void reverse_sorting(Array* const text_for_sorting)
             }
         }
     }
-}
+}*/

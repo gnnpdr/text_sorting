@@ -1,8 +1,8 @@
 #ifndef FREE_H
 #define FREE_H
 
-#include "reverse_sort.h"
+#include "sorting.h"
 
-void free_arrays(Array* const text_for_sorting, Data* const original_text);
+void free_arrays(Array* text_for_sorting, Data* original_text);
 
 #endif //FREE_H

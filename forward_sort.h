@@ -1,4 +1,4 @@
-#ifndef FORW_SORT_H
+/*#ifndef FORW_SORT_H
 #define FORW_SORT_H
 
 #include <ctype.h>
@@ -16,4 +16,4 @@ void finding_start_address(char** address_str);
 int comparing(char* string1, char* string2);
 void swap(StringParametres* const string1, StringParametres* const string2);
 
-#endif //FORW_SORT_H
+#endif //FORW_SORT_H*/
