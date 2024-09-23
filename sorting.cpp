@@ -54,26 +54,11 @@ int forward_comparing(StringParametres* const string_1, StringParametres* const 
     if (tolower(*string1) == tolower(*string2))
     {
         while(tolower(*string1) == tolower(*string2))
-        {
-            if (isalpha(*string1) == 0)
-            {
-                while (isalpha(*string1) == 0)
-                    string1++;
-            }
-
-            if (isalpha(*string2) == 0)
-            {
-                while (isalpha(*string1) == 0)
-                    string2++;
-            }
-                
+        {  
             string1++;
             string2++;
-           
-        }
-            
+        } 
     }
-
     if (tolower(*string1) > tolower(*string2))
         return GREATER;
 }
@@ -96,26 +81,13 @@ int reverse_comparing(StringParametres* const string_1, StringParametres* const 
 
     reverse_finding_start_address(&string1); 
     reverse_finding_start_address(&string2);
-
-
+    
     if (tolower(*string1) == tolower(*string2))
     {
         while(tolower(*string1) == tolower(*string2))
         {
             string1--;
             string2--;
-
-            if (isalpha(*string1) == 0)
-            {
-                while (isalpha(*string1) == 0)
-                    string1--;
-            }
-
-            if (isalpha(*string2) == 0)
-            {
-                while (isalpha(*string1) == 0)
-                    string2--;
-            }
         }
     }
 
